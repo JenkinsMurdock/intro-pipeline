@@ -5,6 +5,8 @@ pipeline {
   stages {
     stage('Say Hello') {
       steps {
+        echo "${TEST_USER_USR}"
+        echo "${TEST_USER_PSW}"
         echo "Hello, ${MY_NAME}!"
         sh 'java -version'
       }
@@ -12,5 +14,6 @@ pipeline {
   }
   environment {
     MY_NAME = 'Dave'
+    TEST_USER = credentials('test-user')
   }
 }
