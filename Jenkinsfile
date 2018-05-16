@@ -3,12 +3,13 @@ pipeline {
     label 'jdk8'
   }
   stages {
-    stage('Say Hello') {
+    stage('Build') {
       steps {
+        echo "Hello ${MY_NAME}!"
         echo "Hello ${params.Name}!"
-        sh 'java -version'
         echo "${TEST_USER_USR}"
         echo "${TEST_USER_PSW}"
+        sh 'java -version'
       }
     }
     stage('Checkpoint') {
@@ -39,9 +40,27 @@ pipeline {
         }
       }
     }
+    stage('Get Kernel') {
+      steps {
+        script {
+          try {
+            KERNEL_VERSION = sh (script: "uname -r", returnStdout: true)
+          } catch(err) {
+            echo "CAUGHT ERROR: ${err}"
+            throw err
+          }
+        }
+        
+      }
+    }
+    stage('Say Kernel') {
+      steps {
+        echo "${KERNEL_VERSION}"
+      }
+    }
   }
   environment {
-    MY_NAME = 'Dave'
+    MY_NAME = 'Mary'
     TEST_USER = credentials('test-user')
   }
   post {
