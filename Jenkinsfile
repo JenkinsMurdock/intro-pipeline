@@ -5,11 +5,10 @@ pipeline {
   stages {
     stage('Say Hello') {
       steps {
-        echo "${TEST_USER_USR}"
-        echo "${TEST_USER_PSW}"
-        echo "Hello, ${MY_NAME}!"
         echo "Hello ${params.Name}!"
         sh 'java -version'
+        echo "${TEST_USER_USR}"
+        echo "${TEST_USER_PSW}"
       }
     }
     stage('Testing') {
@@ -33,24 +32,6 @@ pipeline {
             sleep(time: 20, unit: 'SECONDS')
           }
         }
-      }
-    }
-    stage('Get Kernel') {
-      steps {
-        script {
-          try {
-            KERNEL_VERSION = sh (script: "uname -r", returnStdout: true)
-          } catch(err) {
-            echo "CAUGHT ERROR: ${err}"
-            throw err
-          }
-        }
-        
-      }
-    }
-    stage('Say Kernel') {
-      steps {
-        echo "${KERNEL_VERSION}"
       }
     }
   }
